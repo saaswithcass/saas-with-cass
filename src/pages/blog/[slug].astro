@@ -1,0 +1,118 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const { title, description, date, category, rating, affiliateUrl, affiliateLabel, pros, cons, verdict } = post.data;
+const isReview = !!rating;
+const stars = rating ? Math.round(rating) : 0;
+---
+
+<Layout title={title} description={description}>
+  <article class="max-w-2xl mx-auto px-6 py-16">
+
+    <!-- Meta -->
+    <div class="flex items-center gap-3 mb-6 text-sm text-gray-400">
+      {category && (
+        <span class="text-violet-600 font-medium text-xs">{category}</span>
+      )}
+      {category && <span class="text-gray-200">·</span>}
+      <time>
+        {new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+      </time>
+      {isReview && (
+        <>
+          <span class="text-gray-200">·</span>
+          <span class="text-yellow-400 tracking-tighter text-sm">
+            {'★'.repeat(stars)}{'☆'.repeat(5 - stars)}
+          </span>
+        </>
+      )}
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">{title}</h1>
+    <p class="text-lg text-gray-500 leading-relaxed mb-10">{description}</p>
+
+    <!-- Affiliate CTA (reviews only) -->
+    {isReview && affiliateUrl && (
+      <a
+        href={affiliateUrl}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        class="inline-block bg-violet-600 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-violet-700 transition-colors mb-12"
+      >
+        {affiliateLabel ?? 'Try it free →'}
+      </a>
+    )}
+
+    <!-- Pros / Cons (reviews only) -->
+    {isReview && (pros || cons) && (
+      <div class="grid sm:grid-cols-2 gap-4 mb-12">
+        {pros && (
+          <div class="bg-green-50 rounded-2xl p-5">
+            <p class="text-xs font-semibold text-green-700 uppercase tracking-wide mb-3">Pros</p>
+            <ul class="space-y-2">
+              {pros.map(p => <li class="text-sm text-gray-700 flex gap-2"><span class="text-green-500 mt-0.5">✓</span>{p}</li>)}
+            </ul>
+          </div>
+        )}
+        {cons && (
+          <div class="bg-red-50 rounded-2xl p-5">
+            <p class="text-xs font-semibold text-red-600 uppercase tracking-wide mb-3">Cons</p>
+            <ul class="space-y-2">
+              {cons.map(c => <li class="text-sm text-gray-700 flex gap-2"><span class="text-red-400 mt-0.5">✗</span>{c}</li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+    )}
+
+    <!-- Body -->
+    <div class="prose prose-gray prose-lg max-w-none
+      prose-headings:font-semibold prose-headings:tracking-tight
+      prose-a:text-violet-600 prose-a:no-underline hover:prose-a:underline
+      prose-li:text-gray-600">
+      <Content />
+    </div>
+
+    <!-- Verdict (reviews only) -->
+    {isReview && verdict && (
+      <div class="mt-12 bg-violet-50 border border-violet-100 rounded-2xl p-6">
+        <p class="text-xs font-semibold text-violet-600 uppercase tracking-wide mb-2">Verdict</p>
+        <p class="text-gray-700 leading-relaxed">{verdict}</p>
+      </div>
+    )}
+
+    <!-- Bottom affiliate CTA (reviews only) -->
+    {isReview && affiliateUrl && (
+      <div class="mt-10 pt-10 border-t border-gray-100 text-center">
+        <p class="text-sm text-gray-500 mb-4">Ready to try it?</p>
+        <a
+          href={affiliateUrl}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          class="inline-block bg-violet-600 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-violet-700 transition-colors"
+        >
+          {affiliateLabel ?? 'Get started free →'}
+        </a>
+        <p class="text-xs text-gray-300 mt-3">Affiliate link — I may earn a commission at no cost to you.</p>
+      </div>
+    )}
+
+    <!-- Back -->
+    <div class="mt-14 pt-8 border-t border-gray-100">
+      <a href="/blog" class="text-sm text-gray-400 hover:text-gray-700 transition-colors">← All posts</a>
+    </div>
+
+  </article>
+</Layout>

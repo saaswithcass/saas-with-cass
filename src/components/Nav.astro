@@ -1,0 +1,29 @@
+---
+const navLinks = [
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-gray-100 bg-white sticky top-0 z-50">
+  <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="/" class="text-lg font-bold text-gray-900 hover:text-violet-600">
+      SaaS with Cass
+    </a>
+    <nav class="flex items-center gap-6 text-sm font-medium text-gray-600">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={[
+            'hover:text-violet-600',
+            currentPath.startsWith(link.href) && 'text-violet-600'
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
