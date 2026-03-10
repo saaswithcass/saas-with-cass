@@ -6,26 +6,52 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('posts')).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
-const recent = posts.slice(0, 5);
+const featured = posts[0];
+const recent = posts.slice(1, 7);
 ---
 
 <Layout title="Home" description="Honest takes on SaaS tools, tips, and everything in between — by Cass.">
 
-  <!-- Hero -->
-  <section class="max-w-3xl mx-auto px-6 pt-20 pb-12">
-    <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight mb-5">
-      SaaS with Cass
-    </h1>
-    <p class="text-xl text-gray-500 leading-relaxed max-w-xl">
-      Honest thoughts on software, tools, and building a business online — from someone who's tried way too many of them.
-    </p>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-violet-50 via-white to-blue-50 pt-16 pb-12">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="mb-12">
+        <h1 class="text-5xl sm:text-6xl font-bold text-gray-900 leading-tight mb-4">
+          SaaS with Cass
+        </h1>
+        <p class="text-xl text-gray-600 leading-relaxed max-w-2xl">
+          Honest thoughts on software, tools, and building a business online — from someone who's tried way too many of them.
+        </p>
+      </div>
+
+      <!-- Featured Post (Large) -->
+      {featured && (
+        <div class="mb-12">
+          <PostCard
+            title={featured.data.title}
+            slug={featured.id}
+            description={featured.data.description}
+            date={featured.data.date}
+            category={featured.data.category}
+            tags={featured.data.tags}
+            image={featured.data.image}
+            featured={true}
+          />
+        </div>
+      )}
+    </div>
   </section>
 
-  <!-- Recent posts -->
-  <section class="max-w-3xl mx-auto px-6 pb-24">
+  <!-- Recent Posts Grid -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <div class="mb-10">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Latest Reviews & Tips</h2>
+      <p class="text-gray-500">Fresh insights on tools and strategies</p>
+    </div>
+
     {recent.length > 0 ? (
       <>
-        <div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {recent.map(post => (
             <PostCard
               title={post.data.title}
@@ -34,20 +60,34 @@ const recent = posts.slice(0, 5);
               date={post.data.date}
               category={post.data.category}
               tags={post.data.tags}
+              image={post.data.image}
             />
           ))}
         </div>
-        {posts.length > 5 && (
-          <div class="mt-8">
-            <a href="/blog" class="text-sm text-violet-600 hover:text-violet-800 font-medium">
-              All posts →
+        {posts.length > 7 && (
+          <div class="text-center">
+            <a href="/blog" class="inline-block bg-violet-600 text-white px-6 py-3 rounded-full font-medium hover:bg-violet-700 transition-colors">
+              View all posts →
             </a>
           </div>
         )}
       </>
     ) : (
-      <p class="text-gray-400 text-sm">No posts yet — check back soon.</p>
+      <p class="text-gray-400 text-center py-12">No posts yet — check back soon.</p>
     )}
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-violet-600 py-16 mt-12">
+    <div class="max-w-3xl mx-auto px-6 text-center text-white">
+      <h3 class="text-3xl font-bold mb-4">Looking for honest SaaS reviews?</h3>
+      <p class="text-violet-100 mb-8 text-lg">
+        I review tools that actually matter for creators, entrepreneurs, and small business owners.
+      </p>
+      <a href="/blog" class="inline-block bg-white text-violet-600 px-8 py-3 rounded-full font-semibold hover:bg-violet-50 transition-colors">
+        Browse all posts
+      </a>
+    </div>
   </section>
 
 </Layout>

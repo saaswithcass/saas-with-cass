@@ -4,6 +4,7 @@ description: "Notion promised to replace every other app in my stack. Here's how
 category: "Review"
 tags: ["notion", "productivity", "tools"]
 date: "2026-03-01"
+image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=400&fit=crop"
 rating: 4
 affiliateUrl: "https://notion.so"
 affiliateLabel: "Try Notion free"

@@ -8,6 +8,7 @@ const posts = defineCollection({
     date: z.string(),
     category: z.string().optional(),
     tags: z.array(z.string()).optional(),
+    image: z.string().optional(),
     // Optional review fields — only used when the post is a review
     rating: z.number().min(1).max(5).optional(),
     affiliateUrl: z.string().url().optional(),

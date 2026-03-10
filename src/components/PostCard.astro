@@ -6,23 +6,55 @@ interface Props {
   date: string;
   category?: string;
   tags?: string[];
+  image?: string;
+  featured?: boolean;
 }
 
-const { title, slug, description, date, category, tags } = Astro.props;
+const { title, slug, description, date, category, tags, image, featured } = Astro.props;
 ---
 
-<a href={`/blog/${slug}`} class="group block py-8 border-b border-gray-100 last:border-0 hover:bg-gray-50 -mx-4 px-4 rounded-xl transition-colors duration-150">
-  <div class="flex items-center gap-2 mb-2">
-    {category && (
-      <span class="text-xs font-medium text-violet-600">{category}</span>
+{featured ? (
+  <a href={`/blog/${slug}`} class="group block overflow-hidden rounded-2xl border border-gray-200 hover:border-violet-300 hover:shadow-xl transition-all duration-300 bg-white">
+    {image && (
+      <div class="relative w-full h-48 overflow-hidden bg-gray-100">
+        <img src={image} alt={title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+      </div>
     )}
-    <span class="text-xs text-gray-300">·</span>
-    <time class="text-xs text-gray-400">
-      {new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-    </time>
-  </div>
-  <h2 class="text-lg font-semibold text-gray-900 group-hover:text-violet-600 transition-colors mb-1.5">
-    {title}
-  </h2>
-  <p class="text-gray-500 text-sm leading-relaxed line-clamp-2">{description}</p>
-</a>
+    <div class="p-6">
+      <div class="flex items-center gap-2 mb-3">
+        {category && (
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-violet-100 text-violet-700">{category}</span>
+        )}
+        <time class="text-xs text-gray-400">
+          {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+        </time>
+      </div>
+      <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-violet-600 transition-colors line-clamp-2">
+        {title}
+      </h3>
+      <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">{description}</p>
+    </div>
+  </a>
+) : (
+  <a href={`/blog/${slug}`} class="group block overflow-hidden rounded-xl border border-gray-100 hover:border-violet-200 hover:shadow-lg transition-all duration-200 bg-white">
+    {image && (
+      <div class="relative w-full h-32 overflow-hidden bg-gray-100">
+        <img src={image} alt={title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+      </div>
+    )}
+    <div class="p-4">
+      <div class="flex items-center gap-2 mb-2">
+        {category && (
+          <span class="text-xs font-medium text-violet-600">{category}</span>
+        )}
+        <time class="text-xs text-gray-400">
+          {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+        </time>
+      </div>
+      <h3 class="text-base font-semibold text-gray-900 group-hover:text-violet-600 transition-colors mb-1 line-clamp-2">
+        {title}
+      </h3>
+      <p class="text-gray-500 text-sm leading-relaxed line-clamp-2">{description}</p>
+    </div>
+  </a>
+)}
