@@ -11,10 +11,11 @@ interface Props {
 }
 
 const { title, slug, description, date, category, tags, image, featured } = Astro.props;
+const cleanSlug = slug.replace('.md', '');
 ---
 
 {featured ? (
-  <a href={`/blog/${slug}`} class="group block overflow-hidden rounded-2xl border border-gray-200 hover:border-violet-300 hover:shadow-xl transition-all duration-300 bg-white">
+  <a href={`/blog/${cleanSlug}`} class="group block overflow-hidden rounded-2xl border border-gray-200 hover:border-violet-300 hover:shadow-xl transition-all duration-300 bg-white">
     {image && (
       <div class="relative w-full h-48 overflow-hidden bg-gray-100">
         <img src={image} alt={title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -36,7 +37,7 @@ const { title, slug, description, date, category, tags, image, featured } = Astr
     </div>
   </a>
 ) : (
-  <a href={`/blog/${slug}`} class="group block overflow-hidden rounded-xl border border-gray-100 hover:border-violet-200 hover:shadow-lg transition-all duration-200 bg-white">
+  <a href={`/blog/${cleanSlug}`} class="group block overflow-hidden rounded-xl border border-gray-100 hover:border-violet-200 hover:shadow-lg transition-all duration-200 bg-white">
     {image && (
       <div class="relative w-full h-32 overflow-hidden bg-gray-100">
         <img src={image} alt={title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
