@@ -77,11 +77,24 @@
     const closeBtn = document.getElementById('close-popup');
     const dismissBtn = document.getElementById('dismiss-popup');
     const backdrop = document.getElementById('popup-backdrop');
+    const STORAGE_KEY = 'exit_popup_closed';
+    const DAYS = 4;
+    const MILLISECONDS = DAYS * 24 * 60 * 60 * 1000;
 
-    // Show popup on mouse leave
+    // Check if popup was recently closed
+    const wasRecentlyClosed = () => {
+      const closedTime = localStorage.getItem(STORAGE_KEY);
+      if (!closedTime) return false;
+      
+      const now = Date.now();
+      const timePassed = now - parseInt(closedTime);
+      return timePassed < MILLISECONDS;
+    };
+
+    // Show popup on mouse leave (only if not recently closed)
     document.addEventListener('mouseleave', (e) => {
       // Only trigger at top of page (viewport Y position)
-      if (e.clientY <= 0 && !popup.classList.contains('shown')) {
+      if (e.clientY <= 0 && !popup.classList.contains('shown') && !wasRecentlyClosed()) {
         popup.classList.remove('hidden');
         popup.classList.add('shown');
       }
@@ -91,6 +104,8 @@
     const hidePopup = () => {
       popup.classList.add('hidden');
       popup.classList.remove('shown');
+      // Store close time
+      localStorage.setItem(STORAGE_KEY, Date.now().toString());
     };
 
     closeBtn?.addEventListener('click', hidePopup);
