@@ -54,12 +54,17 @@ const { affiliateUrl = "https://www.gohighlevel.com/?fp_ref=saascass" } = Astro.
 <style>
   aside > div {
     scroll-behavior: smooth;
+    position: fixed;
+    top: 8rem;
+    left: 2rem;
+    width: 16rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
   }
 
-  /* Smooth scrolling for the sidebar */
-  aside {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+  @media (max-width: 1024px) {
+    aside {
+      display: none !important;
+    }
   }
 </style>
