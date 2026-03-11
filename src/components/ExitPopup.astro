@@ -1,0 +1,100 @@
+---
+---
+
+<div id="exit-popup" class="fixed inset-0 hidden z-50">
+  <!-- Backdrop -->
+  <div id="popup-backdrop" class="absolute inset-0 bg-black/50"></div>
+  
+  <!-- Modal -->
+  <div class="relative z-50 flex items-center justify-center min-h-screen px-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in fade-in zoom-in duration-300">
+      <!-- Close Button -->
+      <button id="close-popup" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <!-- Content -->
+      <div class="text-center">
+        <h3 class="text-2xl font-bold text-gray-900 mb-3">Wait! One more thing...</h3>
+        <p class="text-gray-600 text-sm mb-6">
+          Ready to take your business to the next level? Start your free trial of GoHighLevel and automate your entire sales process.
+        </p>
+
+        <!-- CTA Button -->
+        <a 
+          href="https://www.gohighlevel.com/?fp_ref=saascass" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="block w-full bg-violet-600 text-white font-bold py-3 px-6 rounded-full hover:bg-violet-700 transition-colors mb-4"
+        >
+          Start Free Trial
+        </a>
+
+        <!-- Secondary CTA -->
+        <button id="dismiss-popup" class="w-full text-gray-500 text-sm hover:text-gray-700 transition-colors">
+          No thanks, I'll pass
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  #exit-popup > div:last-child {
+    animation: zoomIn 0.3s ease-out;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('exit-popup');
+    const closeBtn = document.getElementById('close-popup');
+    const dismissBtn = document.getElementById('dismiss-popup');
+    const backdrop = document.getElementById('popup-backdrop');
+
+    // Show popup on mouse leave
+    document.addEventListener('mouseleave', (e) => {
+      // Only trigger at top of page (viewport Y position)
+      if (e.clientY <= 0 && !popup.classList.contains('shown')) {
+        popup.classList.remove('hidden');
+        popup.classList.add('shown');
+      }
+    });
+
+    // Close popup
+    const hidePopup = () => {
+      popup.classList.add('hidden');
+      popup.classList.remove('shown');
+    };
+
+    closeBtn?.addEventListener('click', hidePopup);
+    dismissBtn?.addEventListener('click', hidePopup);
+    backdrop?.addEventListener('click', hidePopup);
+  });
+</script>

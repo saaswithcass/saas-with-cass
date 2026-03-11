@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PostSidebar from '../../components/PostSidebar.astro';
+import ExitPopup from '../../components/ExitPopup.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -19,7 +21,12 @@ const stars = rating ? Math.round(rating) : 0;
 ---
 
 <Layout title={title} description={description}>
-  <article class="max-w-2xl mx-auto px-6 py-16">
+  <ExitPopup />
+  
+  <div class="relative">
+    <PostSidebar affiliateUrl={affiliateUrl} />
+    
+    <article class="max-w-2xl mx-auto px-6 py-16">
 
     <!-- Meta -->
     <div class="flex items-center gap-3 mb-6 text-sm text-gray-400">
@@ -114,5 +121,6 @@ const stars = rating ? Math.round(rating) : 0;
       <a href="/blog" class="text-sm text-gray-400 hover:text-gray-700 transition-colors">← All posts</a>
     </div>
 
-  </article>
+    </article>
+  </div>
 </Layout>
